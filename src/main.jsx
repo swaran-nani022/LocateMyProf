@@ -14,12 +14,7 @@ const App = () => {
       .then(res => res.json())
       .then(data => {
         const filtered = data.articles
-          .filter(article =>
-            article.title &&
-            (article.title.toLowerCase().includes('ai') ||
-              article.title.toLowerCase().includes('openai'))
-          )
-          .slice(0, 5)
+          .slice(0, 5) 
           .map(article => ({
             title: article.title,
             url: article.url
@@ -34,13 +29,13 @@ const App = () => {
   };
 
   useEffect(() => {
-    fetchNews(); // initial fetch
+    fetchNews(); 
 
     const interval = setInterval(() => {
-      fetchNews(); // auto-refresh every 5 minutes
-    }, 5 * 60 * 1000); // every 5 minutes (in milliseconds)
+      fetchNews(); 
+    }, 5 * 60 * 1000); 
 
-    return () => clearInterval(interval); // cleanup on unmount
+    return () => clearInterval(interval); 
   }, [topic]);
 
   const redirectTo = (role) => {
@@ -174,7 +169,8 @@ const App = () => {
           .news-ticker {
             margin-top: 2rem;
             width: 80%;
-            height: 10rem;
+            max-width: 700px;
+            height: auto;
             overflow: hidden;
             position: relative;
             background-color: rgba(42, 41, 41, 0.36);
@@ -197,7 +193,7 @@ const App = () => {
 
           .news-item {
             padding: 0.75rem 1rem;
-            height: 3rem;
+            height: auto;
             box-sizing: border-box;
             display: flex;
             align-items: center;
@@ -219,6 +215,28 @@ const App = () => {
           @keyframes scrollUp {
             0% { transform: translateY(0); }
             100% { transform: translateY(-100%); }
+          }
+
+          /* Mobile responsiveness */
+          @media (max-width: 768px) {
+            .news-ticker {
+              width: 95%;
+              height: auto;
+            }
+
+            .news-item {
+              padding: 0.5rem 0.75rem;
+              font-size: 0.9rem;
+            }
+
+            h1 {
+              font-size: 2.5rem;
+            }
+
+            .category-select {
+              width: 100%;
+              padding: 0.5rem;
+            }
           }
         `}
       </style>
