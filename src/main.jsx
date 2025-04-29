@@ -17,7 +17,7 @@ const App = () => {
           .filter(article =>
             article.title &&
             (article.title.toLowerCase().includes('ai') ||
-             article.title.toLowerCase().includes('openai'))
+              article.title.toLowerCase().includes('openai'))
           )
           .slice(0, 5)
           .map(article => ({
@@ -134,8 +134,8 @@ const App = () => {
             padding: '0.5rem 1rem',
             borderRadius: '8px',
             fontSize: '1rem',
-            backgroundColor: '#',
-            color: '#000',
+            backgroundColor: '#EAEAEA',
+            color: '#231F20',
             border: '1px solid #444',
           }}
         >
@@ -177,12 +177,12 @@ const App = () => {
             height: 10rem;
             overflow: hidden;
             position: relative;
-            background-color:rgba(42, 41, 41, 0.36);
+            background-color: rgba(42, 41, 41, 0.36);
             border-radius: 10px;
             color: #EAEAEA;
             font-size: 1rem;
             font-weight: 500;
-            border:black;
+            border: black;
           }
 
           .news-scroll {
@@ -201,7 +201,7 @@ const App = () => {
             box-sizing: border-box;
             display: flex;
             align-items: center;
-            color:rgb(0, 0, 0);
+            color: rgb(0, 0, 0);
             text-decoration: none;
             transition: background 0.3s;
           }
