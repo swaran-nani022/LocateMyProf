@@ -13,13 +13,18 @@ const App = () => {
     fetch(`https://newsapi.org/v2/top-headlines?category=${topic}&country=us&apiKey=${API_KEY}`)
       .then(res => res.json())
       .then(data => {
-        const filtered = data.articles
-          .slice(0, 5) 
-          .map(article => ({
-            title: article.title,
-            url: article.url
-          }));
-        setNews(filtered);
+        if (data.status === 'ok' && data.articles) {
+          const filtered = data.articles
+            .slice(0, 5) // Limiting the number of articles shown
+            .map(article => ({
+              title: article.title,
+              url: article.url
+            }));
+          setNews(filtered);
+        } else {
+          console.error('No articles found or API returned an error');
+          setNews([]);
+        }
         setLoading(false);
       })
       .catch(err => {
@@ -29,13 +34,12 @@ const App = () => {
   };
 
   useEffect(() => {
-    fetchNews(); 
-
+    fetchNews(); // Initial fetch
     const interval = setInterval(() => {
-      fetchNews(); 
-    }, 5 * 60 * 1000); 
+      fetchNews(); // Auto-refresh every 5 minutes
+    }, 5 * 60 * 1000); // Every 5 minutes
 
-    return () => clearInterval(interval); 
+    return () => clearInterval(interval); // Cleanup on unmount
   }, [topic]);
 
   const redirectTo = (role) => {
