@@ -10,7 +10,7 @@ const App = () => {
 
   const fetchNews = () => {
     setLoading(true);
-    fetch(`https://gnews.io/api/v4/top-headlines?token=${API_KEY}&lang=en&topic=${topic}`)
+    fetch(`https://gnews.io/api/v4/top-headlines?apikey=${API_KEY}&lang=en&topic=${topic}`)
       .then(res => res.json())
       .then(data => {
         const filtered = data.articles
@@ -75,7 +75,6 @@ const App = () => {
       }}>
         Welcome to LocateMyProf
       </h1>
-
       <p style={{
         fontSize: '1.25rem',
         color: '#231F20',
@@ -113,16 +112,13 @@ const App = () => {
               e.currentTarget.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.3)';
               e.currentTarget.style.backgroundColor = '#8E793E';
             }}
-            onFocus={(e) => {
-              e.currentTarget.style.outline = 'none';
-              e.currentTarget.style.boxShadow = '0 0 0 3px rgba(179, 179, 179, 0.5)';
-            }}
           >
             {role.charAt(0).toUpperCase() + role.slice(1)}
           </button>
         ))}
       </div>
 
+      {/* Category Selector */}
       <div style={{ marginTop: '2rem', marginBottom: '1rem' }}>
         <label style={{ marginRight: '1rem', fontSize: '1rem', color: '#231F20' }}><b>News Topic:</b></label>
         <select
@@ -132,15 +128,19 @@ const App = () => {
             padding: '0.5rem 1rem',
             borderRadius: '8px',
             fontSize: '1rem',
+            backgroundColor: '#fff',
+            color: '#000',
             border: '1px solid #444',
           }}
         >
           <option value="technology">Tech</option>
           <option value="science">Science</option>
           <option value="business">Business</option>
+          <option value="world">World</option>
         </select>
       </div>
 
+      {/* NEWS SCROLLER */}
       <div className="news-ticker">
         <div className="news-scroll">
           {loading ? (
@@ -163,57 +163,75 @@ const App = () => {
         </div>
       </div>
 
-      <style>{`
-        .news-ticker {
-          margin-top: 2rem;
-          width: 90%;
-          max-width: 600px;
-          height: 10rem;
-          overflow: hidden;
-          position: relative;
-          background-color: rgba(42, 41, 41, 0.36);
-          border-radius: 10px;
-          color: #EAEAEA;
-          font-size: 1rem;
-          font-weight: 500;
-        }
+      {/* Styles */}
+      <style>
+        {`
+          .news-ticker {
+            margin-top: 2rem;
+            width: 90%;
+            max-width: 600px;
+            height: 10rem;
+            overflow: hidden;
+            position: relative;
+            background-color: rgba(42, 41, 41, 0.36);
+            border-radius: 10px;
+            color: #EAEAEA;
+            font-size: 1rem;
+            font-weight: 500;
+          }
 
-        .news-scroll {
-          display: flex;
-          flex-direction: column;
-          animation: scrollUp 20s linear infinite;
-        }
+          .news-scroll {
+            display: flex;
+            flex-direction: column;
+            animation: scrollUp 20s linear infinite;
+          }
 
-        .news-ticker:hover .news-scroll {
-          animation-play-state: paused;
-        }
+          .news-ticker:hover .news-scroll {
+            animation-play-state: paused;
+          }
 
-        .news-item {
-          padding: 0.75rem 1rem;
-          height: 3rem;
-          box-sizing: border-box;
-          display: flex;
-          align-items: center;
-          color: rgb(0, 0, 0);
-          text-decoration: none;
-          transition: background 0.3s;
-        }
+          .news-item {
+            padding: 0.75rem 1rem;
+            height: 3rem;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            color: #000;
+            text-decoration: none;
+            transition: background 0.3s;
+          }
 
-        .news-item:hover {
-          background-color: #AD974F;
-        }
+          .news-item:hover {
+            background-color: #AD974F;
+          }
 
-        .spinner {
-          font-style: italic;
-          color: #999;
-          justify-content: center;
-        }
+          .spinner {
+            font-style: italic;
+            color: #999;
+            justify-content: center;
+          }
 
-        @keyframes scrollUp {
-          0% { transform: translateY(0); }
-          100% { transform: translateY(-100%); }
-        }
-      `}</style>
+          @keyframes scrollUp {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-100%); }
+          }
+
+          @media (max-width: 600px) {
+            .news-ticker {
+              height: auto;
+            }
+
+            .news-scroll {
+              animation: none;
+            }
+
+            .news-item {
+              height: auto;
+              padding: 1rem;
+            }
+          }
+        `}
+      </style>
     </div>
   );
 };
