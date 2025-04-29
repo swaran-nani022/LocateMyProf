@@ -168,10 +168,10 @@ const App = () => {
         {`
           .news-ticker {
             margin-top: 2rem;
-            width: 80%;
+            width: 100%;
             max-width: 700px;
             height: auto;
-            overflow-y: auto;
+            overflow-y: scroll;
             position: relative;
             background-color: rgba(42, 41, 41, 0.36);
             border-radius: 10px;
@@ -184,7 +184,6 @@ const App = () => {
           .news-scroll {
             display: flex;
             flex-direction: column;
-            animation: scrollUp 20s linear infinite;
           }
 
           .news-ticker:hover .news-scroll {
@@ -210,11 +209,6 @@ const App = () => {
             font-style: italic;
             color: #999;
             justify-content: center;
-          }
-
-          @keyframes scrollUp {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(-100%); }
           }
 
           /* Mobile responsiveness */
