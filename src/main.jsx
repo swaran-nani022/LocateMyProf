@@ -6,25 +6,25 @@ const App = () => {
   const [loading, setLoading] = useState(true);
   const [topic, setTopic] = useState('technology');
 
-  const API_KEY = '2f3555884c9045c8b1961c9573ad6166';
+  const API_KEY = 'eeb6de765d227ea0e7c6c646511c6b3e';
 
   const fetchNews = () => {
     setLoading(true);
-    fetch(`https://newsapi.org/v2/top-headlines?category=${topic}&country=us&apiKey=${API_KEY}`)
+    fetch(`https://gnews.io/api/v4/top-headlines?token=${API_KEY}&lang=en&topic=${topic}`)
       .then(res => res.json())
       .then(data => {
-        if (data.status === 'ok' && data.articles) {
-          const filtered = data.articles
-            .slice(0, 5) // Limiting the number of articles shown
-            .map(article => ({
-              title: article.title,
-              url: article.url
-            }));
-          setNews(filtered);
-        } else {
-          console.error('No articles found or API returned an error');
-          setNews([]);
-        }
+        const filtered = data.articles
+          .filter(article =>
+            article.title &&
+            (article.title.toLowerCase().includes('ai') ||
+             article.title.toLowerCase().includes('openai'))
+          )
+          .slice(0, 5)
+          .map(article => ({
+            title: article.title,
+            url: article.url
+          }));
+        setNews(filtered);
         setLoading(false);
       })
       .catch(err => {
@@ -34,12 +34,11 @@ const App = () => {
   };
 
   useEffect(() => {
-    fetchNews(); // Initial fetch
+    fetchNews();
     const interval = setInterval(() => {
-      fetchNews(); // Auto-refresh every 5 minutes
-    }, 5 * 60 * 1000); // Every 5 minutes
-
-    return () => clearInterval(interval); // Cleanup on unmount
+      fetchNews();
+    }, 5 * 60 * 1000);
+    return () => clearInterval(interval);
   }, [topic]);
 
   const redirectTo = (role) => {
@@ -76,6 +75,7 @@ const App = () => {
       }}>
         Welcome to LocateMyProf
       </h1>
+
       <p style={{
         fontSize: '1.25rem',
         color: '#231F20',
@@ -85,7 +85,7 @@ const App = () => {
         Select your account type
       </p>
 
-      <div style={{ display: 'flex' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
         {['student', 'teacher'].map(role => (
           <button
             key={role}
@@ -123,7 +123,6 @@ const App = () => {
         ))}
       </div>
 
-      {/* Category Selector */}
       <div style={{ marginTop: '2rem', marginBottom: '1rem' }}>
         <label style={{ marginRight: '1rem', fontSize: '1rem', color: '#231F20' }}><b>News Topic:</b></label>
         <select
@@ -133,18 +132,15 @@ const App = () => {
             padding: '0.5rem 1rem',
             borderRadius: '8px',
             fontSize: '1rem',
-            backgroundColor: '#EAEAEA',
-            color: '#231F20',
             border: '1px solid #444',
           }}
         >
           <option value="technology">Tech</option>
           <option value="science">Science</option>
-          <option value="business">Crypto</option>
+          <option value="business">Business</option>
         </select>
       </div>
 
-      {/* NEWS SCROLLER */}
       <div className="news-ticker">
         <div className="news-scroll">
           {loading ? (
@@ -167,79 +163,57 @@ const App = () => {
         </div>
       </div>
 
-      {/* Styles */}
-      <style>
-        {`
-          .news-ticker {
-            margin-top: 2rem;
-            width: 100%;
-            max-width: 700px;
-            height: auto;
-            overflow-y: scroll;
-            position: relative;
-            background-color: rgba(42, 41, 41, 0.36);
-            border-radius: 10px;
-            color: #EAEAEA;
-            font-size: 1rem;
-            font-weight: 500;
-            border: black;
-          }
+      <style>{`
+        .news-ticker {
+          margin-top: 2rem;
+          width: 90%;
+          max-width: 600px;
+          height: 10rem;
+          overflow: hidden;
+          position: relative;
+          background-color: rgba(42, 41, 41, 0.36);
+          border-radius: 10px;
+          color: #EAEAEA;
+          font-size: 1rem;
+          font-weight: 500;
+        }
 
-          .news-scroll {
-            display: flex;
-            flex-direction: column;
-          }
+        .news-scroll {
+          display: flex;
+          flex-direction: column;
+          animation: scrollUp 20s linear infinite;
+        }
 
-          .news-ticker:hover .news-scroll {
-            animation-play-state: paused;
-          }
+        .news-ticker:hover .news-scroll {
+          animation-play-state: paused;
+        }
 
-          .news-item {
-            padding: 0.75rem 1rem;
-            height: auto;
-            box-sizing: border-box;
-            display: flex;
-            align-items: center;
-            color: rgb(0, 0, 0);
-            text-decoration: none;
-            transition: background 0.3s;
-          }
+        .news-item {
+          padding: 0.75rem 1rem;
+          height: 3rem;
+          box-sizing: border-box;
+          display: flex;
+          align-items: center;
+          color: rgb(0, 0, 0);
+          text-decoration: none;
+          transition: background 0.3s;
+        }
 
-          .news-item:hover {
-            background-color: #AD974F;
-          }
+        .news-item:hover {
+          background-color: #AD974F;
+        }
 
-          .spinner {
-            font-style: italic;
-            color: #999;
-            justify-content: center;
-          }
+        .spinner {
+          font-style: italic;
+          color: #999;
+          justify-content: center;
+        }
 
-          /* Mobile responsiveness */
-          @media (max-width: 768px) {
-            .news-ticker {
-              width: 95%;
-              height: auto;
-              max-height: 300px; /* Allow for scrolling */
-              overflow-y: scroll;
-            }
-
-            .news-item {
-              padding: 0.5rem 0.75rem;
-              font-size: 0.9rem;
-            }
-
-            h1 {
-              font-size: 2.5rem;
-            }
-
-            .category-select {
-              width: 100%;
-              padding: 0.5rem;
-            }
-          }
-        `}
-      </style>
+        @keyframes scrollUp {
+          0% { transform: translateY(0); }
+          100% { transform: translateY(-100%); }
+        }
+      `}</style>
     </div>
   );
 };
