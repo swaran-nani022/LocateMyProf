@@ -171,7 +171,7 @@ const App = () => {
             width: 80%;
             max-width: 700px;
             height: auto;
-            overflow: hidden;
+            overflow-y: auto;
             position: relative;
             background-color: rgba(42, 41, 41, 0.36);
             border-radius: 10px;
@@ -222,6 +222,8 @@ const App = () => {
             .news-ticker {
               width: 95%;
               height: auto;
+              max-height: 300px; /* Allow for scrolling */
+              overflow-y: scroll;
             }
 
             .news-item {
